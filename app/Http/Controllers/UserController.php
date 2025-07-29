@@ -20,23 +20,19 @@ class UserController extends Controller
     {
         $data = $request->validated();
         if (User::where('username', $data['username'])->count() == 1) {
-            // ada di database
             throw new HttpResponseException(
-                response(
-                    [
-                        'errors' => [
-                            'username' => 'username already exists',
-                        ],
-                    ],
-                    400,
-                ),
+                response([
+                    'errors' => [
+                        'username' => 'username already exists',
+                    ]
+                ], 400)
             );
         }
 
         $user = new User($data);
         $user->password = Hash::make($data['password']);
         $user->save();
-        return new UserResource($user)->response()->setStatusCode(201);
+        return (new UserResource($user))->response()->setStatusCode(201);
     }
 
     public function login(UserLoginRequest $request): UserResource
@@ -44,16 +40,11 @@ class UserController extends Controller
         $data = $request->validated();
         $user = User::where('username', $data['username'])->first();
         if (!$user || !Hash::check($data['password'], $user->password)) {
-            // user tidak ada di database
-            throw new HttpResponseException(
-                response(
-                    [
-                        'messages' => [
-                            'username' => 'username or password is wrong',
-                        ],
+            throw new HttpResponseException(response([
+                    'messages' => [
+                        'username' => 'username or password is wrong',
                     ],
-                    401,
-                ),
+                ], 401)
             );
         }
         $user->token = Str::uuid()->toString();

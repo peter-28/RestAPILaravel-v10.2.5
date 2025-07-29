@@ -16,13 +16,13 @@ class UserTest extends TestCase
         $this->post('/api/users', [
             'username' => 'peter',
             'password' => 'rahasia',
-            'name' => 'peter-28',
+            'name' => 'peter-28'
         ])
             ->assertStatus(201)
             ->assertJson([
                 'data' => [
-                    'username' => 'peter',
-                    'name' => 'peter-28',
+                    "username" => 'peter',
+                    "name" => 'peter-28'
                 ],
             ]);
     }
@@ -32,15 +32,14 @@ class UserTest extends TestCase
         $this->post('/api/users', [
             'username' => '',
             'password' => '',
-            'name' => '',
-        ])
-            ->assertStatus(400)
+            'name' => ''
+        ])->assertStatus(400)
             ->assertJson([
                 'errors' => [
-                    'username' => ['This username field is required.'],
-                    'password' => ['This password field is required.'],
-                    'name' => ['This name field is required.'],
-                ],
+                    "username" => ["The username field is required."],
+                    "password" => ["The password field is required."],
+                    "name" => ["The name field is required."]
+                ]
             ]);
     }
 
@@ -50,13 +49,12 @@ class UserTest extends TestCase
         $this->post('/api/users', [
             'username' => 'peter',
             'password' => 'rahasia',
-            'name' => 'peter-28',
-        ])
-            ->assertStatus(400)
+            'name' => 'peter'
+        ])->assertStatus(400)
             ->assertJson([
                 'errors' => [
-                    'username' => ['username already exists'],
-                ],
+                    'username' => 'username already exists',
+                ]
             ]);
     }
 
@@ -79,7 +77,7 @@ class UserTest extends TestCase
         self::assertNotNull($user->token);
     }
 
-    public function TestLoginFailedUsernameNotFound()
+    public function testLoginFailedUsernameNotFound()
     {
         $this->post('/api/users/login', [
             'username' => 'test',
@@ -93,7 +91,7 @@ class UserTest extends TestCase
             ]);
     }
 
-    public function TestLoginFailedPasswordWrong()
+    public function testLoginFailedPasswordWrong()
     {
         $this->seed([UserSeeder::class]);
         $this->post('/api/users/login', [
@@ -114,22 +112,24 @@ class UserTest extends TestCase
         $this->get('/api/users/current', ['Authorization' => 'test'])
             ->assertStatus(200)
             ->assertJson([
-                'data' => [
-                    'username' => 'test',
-                    'name' => 'test',
-                ],
+                "data" => [
+                    "username" => 'test',
+                    "name" => 'test'
+                ]
             ]);
     }
 
-    public function testGetAnauthorized()
+    public function testGetUnauthorized()
     {
         $this->seed([UserSeeder::class]);
         $this->get('/api/users/current')
             ->assertStatus(401)
             ->assertJson([
-                'errors' => [
-                    'messages' => ['Unauthorized'],
-                ],
+                "errors" => [
+                    "message" => [
+                        "unauthorized"
+                    ]
+                ]
             ]);
     }
 
@@ -139,9 +139,11 @@ class UserTest extends TestCase
         $this->get('/api/users/current', ['Authorization' => 'salah'])
             ->assertStatus(401)
             ->assertJson([
-                'errors' => [
-                    'messages' => ['Unauthorized'],
-                ],
+                "errors" => [
+                    "message" => [
+                        "unauthorized"
+                    ]
+                ]
             ]);
     }
 
@@ -149,21 +151,15 @@ class UserTest extends TestCase
     {
         $this->seed([UserSeeder::class]);
         $oldPassword = User::where('username', 'test')->first();
-        $this->patch(
-            '/api/users/current',
-            [
-                'password' => 'baru',
-            ],
-            [
-                'Authorization' => 'test',
-            ],
-        )
-            ->assertStatus(200)
+        $this->patch('/api/users/current',
+            ['password' => 'baru'],
+            ['Authorization' => 'test']
+        )->assertStatus(200)
             ->assertJson([
                 'data' => [
                     'username' => 'test',
-                    'name' => 'test',
-                ],
+                    'name' => 'test'
+                ]
             ]);
 
         $newPassword = User::where('username', 'test')->first();
@@ -173,45 +169,39 @@ class UserTest extends TestCase
     public function testUpdateNameSuccess()
     {
         $this->seed([UserSeeder::class]);
-        $oldPassword = User::where('username', 'test')->first();
-        $this->patch(
+        $oldUser = User::where('username', 'test')->first();
+
+        $response = $this->patch(
             '/api/users/current',
-            [
-                'name' => 'Eko',
-            ],
-            [
-                'Authorization' => 'test',
-            ],
-        )
-            ->assertStatus(200)
+            ['name' => 'Eko'],
+            ['Authorization' => 'test']
+        );
+
+        $response->assertStatus(200)
             ->assertJson([
                 'data' => [
                     'username' => 'test',
-                    'name' => 'Eko',
-                ],
+                    'name' => 'Eko'
+                ]
             ]);
 
-        $newPassword = User::where('username', 'test')->first();
-        self::assertNotEquals($oldPassword->name, $newPassword->name);
+        $newUser = User::where('username', 'test')->first();
+        self::assertEquals('Eko', $newUser->name);
+        self::assertEquals($oldUser->password, $newUser->password);
+        self::assertNotEquals($oldUser->name, $newUser->name);
     }
 
     public function testUpdateFailed()
     {
         $this->seed([UserSeeder::class]);
-        $this->patch(
-            '/api/users/current',
-            [
-                'name' => 'EkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEkoEko',
-            ],
-            [
-                'Authorization' => 'test',
-            ],
-        )
-            ->assertStatus(400)
+        $this->patch('/api/users/current',
+            ['name' => str_repeat('Eko', 100)],
+            ['Authorization' => 'test'],
+        )->assertStatus(400)
             ->assertJson([
                 'errors' => [
-                    'name' => ['The name field must not be greater than 255 characters.'],
-                ],
+                    'name' => ['The name field must not be greater than 100 characters.']
+                ]
             ]);
     }
 
@@ -235,8 +225,10 @@ class UserTest extends TestCase
             ->assertStatus(401)
             ->assertJson([
                 'errors' => [
-                    'messages' => ['Unauthorized'],
-                ],
+                    'message' => [
+                        'unauthorized'
+                    ]
+                ]
             ]);
     }
 }

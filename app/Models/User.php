@@ -24,32 +24,32 @@ class User extends Model implements Authenticatable
         return $this->hasMany(Contact::class, 'user_id', 'id');
     }
 
-    public function getAuthIdentifierName(): string
+    public function getAuthIdentifierName()
     {
         return 'username';
     }
 
-    public function getAuthIdentifier(): int
+    public function getAuthIdentifier()
     {
         return $this->username;
     }
 
-    public function getAuthPassword(): string
+    public function getAuthPassword()
     {
         return $this->password;
     }
 
-    public function getRememberToken(): ?string
+    public function getRememberToken()
     {
         return $this->token;
     }
 
-    public function setRememberToken($value): void
+    public function setRememberToken($value)
     {
         $this->token = $value;
     }
 
-    public function getRememberTokenName(): string
+    public function getRememberTokenName()
     {
         return 'token';
     }
