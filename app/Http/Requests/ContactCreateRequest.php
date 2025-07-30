@@ -2,18 +2,18 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
 
-class   UserRegisterRequest extends FormRequest
+class ContactCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user() != null;
     }
 
     /**
@@ -24,9 +24,10 @@ class   UserRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'max:100'],
-            'password' => ['required', 'max:100'],
-            'name' => ['required', 'max:100'],
+            'first_name' => ['required', 'max:100'],
+            'last_name' => ['nullable', 'max:100'],
+            'email' => ['nullable', 'max:200', 'email'],
+            'phone' => ['nullable', 'max:20']
         ];
     }
 
