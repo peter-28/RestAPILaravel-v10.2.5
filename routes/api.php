@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AddressesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,15 @@ Route::middleware(ApiAuthMiddleware::class)->group(function () {
     Route::get('/contacts/{id}', [ContactController::class, 'get'])->where('id', '[0-9]+');
     Route::put('/contacts/{id}', [ContactController::class, 'update'])->where('id', '[0-9]+');
     Route::delete('/contacts/{id}', [ContactController::class, 'delete'])->where('id', '[0-9]+');
+
+    Route::post('/contacts/{idContact}/addresses', [AddressesController::class, 'create'])->where('idContact', '[0-9]+');
+    Route::get('/contacts/{idContact}/addresses/{idAddress}', [AddressesController::class, 'get'])
+        ->where('idContact', '[0-9]+')
+        ->where('idAddress', '[0-9]+');
+    Route::put('/contacts/{idContact}/addresses/{idAddress}', [AddressesController::class, 'update'])
+        ->where('idContact', '[0-9]+')
+        ->where('idAddress', '[0-9]+');
+    Route::delete('/contacts/{idContact}/addresses/{idAddress}', [AddressesController::class, 'delete'])
+        ->where('idContact', '[0-9]+')
+        ->where('idAddress', '[0-9]+');
 });

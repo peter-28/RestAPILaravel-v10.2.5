@@ -208,7 +208,7 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Create Update Addres",
+                    "description": "Create Update Address",
                     "content": {
                         "application/json": {
                             "schema": {
