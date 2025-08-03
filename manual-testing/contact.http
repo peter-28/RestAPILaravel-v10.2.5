@@ -1,0 +1,42 @@
+### Create contact
+POST http://localhost:8000/api/contacts
+Content-Type: application/json
+Accept: application/json
+Authorization: a78ae55f-e965-4929-b4b2-4dbaf6b7566a
+
+{
+    "first_name": "Harry",
+    "last_name": "lap",
+    "email": "lap@gmail.com",
+    "phone": "0984358535"
+}
+
+
+### Search contact
+GET http://localhost:8000/api/contacts?name=first2
+Accept: application/json
+Authorization: test
+
+### Get contact
+GET http://localhost:8000/api/contacts/82
+Accept: application/json
+Authorization: a78ae55f-e965-4929-b4b2-4dbaf6b7566a
+
+
+### Update contact
+PUT http://localhost:8000/api/contacts/82
+Content-Type: application/json
+Accept: application/json
+Authorization: a78ae55f-e965-4929-b4b2-4dbaf6b7566a
+
+{
+    "first_name": "Harry Potter",
+    "last_name": "lap",
+    "email": "lap@gmail.com",
+    "phone": "0984358535"
+}
+
+### Deleteet contact
+DELETE http://localhost:8000/api/contacts/81
+Accept: application/json
+Authorization: a78ae55f-e965-4929-b4b2-4dbaf6b7566a

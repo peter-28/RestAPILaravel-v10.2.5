@@ -1,0 +1,13 @@
+### Create Address
+POST http://localhost:8000/api/contacts/265/addresses
+Content-Type: application/json
+Accept: application/json
+Authorization: test
+
+{
+    "street": "Harry",
+    "city": "jaya",
+    "province": "Indo",
+    "country": "jawa",
+    "postal_code": "000000111"
+}

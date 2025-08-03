@@ -90,4 +90,12 @@ class AddressesController extends Controller
         $address->delete();
         return response()->json(["data" => true])->setStatusCode(200);
     }
+
+    public function list(int $idContact): JsonResponse
+    {
+        $user = Auth::user();
+        $contact = $this->getContact($user, $idContact);
+        $address = Address::where('contact_id', $contact->id)->get();
+        return (AddressesResource::collection($address))->response()->setStatusCode(200);
+    }
 }

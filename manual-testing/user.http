@@ -1,0 +1,41 @@
+### Register User API
+POST http://localhost:8000/api/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "username": "lasefams",
+    "password": "rahasia",
+    "name": "lasefams 59"
+}
+
+### Login User API
+POST http://localhost:8000/api/users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "username": "lasefams",
+    "password": "rahasia"
+}
+
+### Get Curent User API
+GET http://localhost:8000/api/users/current
+Accept: application/json
+Authorization: a78ae55f-e965-4929-b4b2-4dbaf6b7566a
+
+
+### Update Current user api
+PATCH http://localhost:8000/api/users/current
+Content-Type: application/json
+Accept: application/json
+Authorization: a78ae55f-e965-4929-b4b2-4dbaf6b7566a
+
+{
+    "name": "Peter 39"
+}
+
+### Logout Current user api
+DELETE http://localhost:8000/api/users/logout
+Accept: application/json
+Authorization: a78ae55f-e965-4929-b4b2-4dbaf6b7566a
