@@ -11,3 +11,33 @@ Authorization: test
     "country": "jawa",
     "postal_code": "000000111"
 }
+
+
+### Get Address
+POST http://localhost:8000/api/contacts/265/addresses/3
+Accept: application/json
+Authorization: test
+
+### Update Address
+PUT http://localhost:8000/api/contacts/265/addresses/3
+Content-Type: application/json
+Accept: application/json
+Authorization: test
+
+{
+    "street": "Harry Driver",
+    "city": "jaya",
+    "province": "Indo",
+    "country": "jawa",
+    "postal_code": "000000111"
+}
+
+### Delete Address
+PUT http://localhost:8000/api/contacts/265/addresses/3
+Accept: application/json
+Authorization: test
+
+### List Address
+PUT http://localhost:8000/api/contacts/265/addresses
+Accept: application/json
+Authorization: test
